@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		"editor.defaultFormatter": "vscode.python",
+		"python.formatting.provider": "black",
+		"[python]": {
+			"editor.defaultFormatter": "ms-python.python"
+		}
+	}
+}

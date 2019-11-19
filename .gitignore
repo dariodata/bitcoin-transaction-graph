@@ -1,0 +1,6 @@
+.vscode/
+aml_config/
+elliptic_bitcoin_dataset/
+nsl-keras/
+wandb/
+.amlignore
