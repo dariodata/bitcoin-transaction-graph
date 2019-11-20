@@ -85,7 +85,7 @@ def _parse_args():
     parser.add_argument(
         "--train_ratio",
         type=float,
-        default=0.8,
+        default=0.7,
         help="Fraction of data to use for training",
     )
     parser.add_argument(
@@ -184,10 +184,10 @@ if __name__ == "__main__":
 
     dataset_size = df_classes["label"].notna().sum()
     train_ratio = args.train_ratio
-
-    train_indices = ((features[:, 0] <= 34) & (labels != -1)).nonzero().view(-1)
-    val_indices = ((features[:, 0] > 34) & (labels != -1)).nonzero().view(-1)
-    test_indices = ((features[:, 0] > 34) & (labels != -1)).nonzero().view(-1)
+    train_time_steps = round(len(np.unique(features[:, 0])) * train_ratio)
+    train_indices = ((features[:, 0] <= train_time_steps) & (labels != -1)).nonzero().view(-1)
+    val_indices = ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
+    test_indices = ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
 
     print(
         f"""----Data statistics------
