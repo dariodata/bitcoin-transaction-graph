@@ -185,9 +185,15 @@ if __name__ == "__main__":
     dataset_size = df_classes["label"].notna().sum()
     train_ratio = args.train_ratio
     train_time_steps = round(len(np.unique(features[:, 0])) * train_ratio)
-    train_indices = ((features[:, 0] <= train_time_steps) & (labels != -1)).nonzero().view(-1)
-    val_indices = ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
-    test_indices = ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
+    train_indices = (
+        ((features[:, 0] <= train_time_steps) & (labels != -1)).nonzero().view(-1)
+    )
+    val_indices = (
+        ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
+    )
+    test_indices = (
+        ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
+    )
 
     print(
         f"""----Data statistics------
