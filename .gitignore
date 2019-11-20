@@ -4,3 +4,4 @@ elliptic_bitcoin_dataset/
 nsl-keras/
 wandb/
 .amlignore
+.DS_Store
