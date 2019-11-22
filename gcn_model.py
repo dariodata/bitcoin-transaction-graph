@@ -132,7 +132,7 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph")
+        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph2")
         wandb.config.update(args)
 
     # load data
