@@ -35,7 +35,7 @@ profile.to_file(output_file=path + "/features_report.html")
 rejected_variables = profile.get_rejected_variables(threshold=0.9)
 description = profile.get_description()
 
-with bz2.BZ2File(path+'/features_profile.pkl.bz2', 'w') as handle:
+with bz2.BZ2File(path + "/features_profile.pkl.bz2", "w") as handle:
     pickle.dump(profile, handle)
 # with bz2.BZ2File(path+'/features_profile.pkl.bz2', 'r') as handle:
 #     p2 = pickle.load(handle)
