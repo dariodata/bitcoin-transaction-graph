@@ -14,6 +14,7 @@ torch = "*"
 torchvision = "*"
 dgl = "*"
 scikit-learn = "*"
+jupyterlab = "*"
 
 [requires]
 python_version = "3.7"
