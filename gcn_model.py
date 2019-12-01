@@ -267,6 +267,6 @@ if __name__ == "__main__":
         model, features, labels, test_indices
     )
     print(
-        f"Test Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "\
+        f"Test Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "
         f"F1 score {f1_score:.4f}"
     )
