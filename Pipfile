@@ -6,15 +6,14 @@ verify_ssl = true
 [dev-packages]
 pandas-profiling = "*"
 flake8 = "*"
-black = "*"
+black = "==19.10b0"
+wandb = "*"
 
 [packages]
 torch = "*"
 torchvision = "*"
 dgl = "*"
+scikit-learn = "*"
 
 [requires]
 python_version = "3.7"
-
-[pipenv]
-allow_prereleases = true
