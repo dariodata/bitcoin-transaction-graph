@@ -3,7 +3,7 @@ import os
 import pickle
 
 import pandas as pd
-import pandas_profiling
+import pandas_profiling  # noqa: F401
 
 # load data
 path = os.path.dirname(os.path.realpath(__file__))
