@@ -95,7 +95,7 @@ def _parse_args():
         "--nhidden", type=int, default=100, help="Number of hidden units per layer",
     )
     parser.add_argument(
-        "--nlayer", type=int, default=2, help="Number of hidden layers",
+        "--nlayer", type=int, default=2, help="Number of layers",
     )
     parser.add_argument(
         "--posweight",
@@ -132,7 +132,7 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph2")
+        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph3")
         wandb.config.update(args)
 
     # load data
@@ -248,7 +248,7 @@ if __name__ == "__main__":
         if not args.nowandb:
             wandb.log(
                 {
-                    "loss": loss,
+                    "train_loss": loss,
                     "val_loss": val_loss,
                     "val_accuracy": acc,
                     "val_precision": precision,
