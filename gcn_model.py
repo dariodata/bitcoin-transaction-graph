@@ -170,23 +170,20 @@ if __name__ == "__main__":
     )
     g_nx.add_edges_from(zip(df_edges["txId1"], df_edges["txId2"]))
 
-    # graph preprocessing
-    # add self loop
-    if not args.noselfloop:
-        g_nx.remove_edges_from(nx.selfloop_edges(g_nx))
-        g_nx.add_edges_from(zip(g_nx.nodes(), g_nx.nodes()))
-
     # create DGL graph
     g = dgl.DGLGraph()
-    g.from_networkx(g_nx)  # , node_attrs=['label'])
-    # for featureless run use the node in-degrees
-    # g.ndata['features'] = g.in_degrees().view(-1,1).float()
+    g.from_networkx(g_nx)
     g.ndata["label"] = torch.tensor(
         df_classes.set_index("txId").loc[sorted(g_nx.nodes()), "label"].values
     )
     g.ndata["features_matrix"] = torch.tensor(
         df_features.set_index(0).loc[sorted(g_nx.nodes()), :].values
     )
+
+    # add self loop
+    if not args.noselfloop:
+        g.add_edges(g.nodes(), g.nodes())
+    
     print(g)
 
     if args.onlylocal:
