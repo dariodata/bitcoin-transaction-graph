@@ -276,11 +276,11 @@ if __name__ == "__main__":
         )
 
     # %%
-    print()
-    _, acc, precision, recall, f1_score = evaluate(
-        model, features, labels, val_indices
-    )
-    print(
-        f"Val Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "
-        f"F1 score {f1_score:.4f}"
-    )
+    # print()
+    # _, acc, precision, recall, f1_score = evaluate(
+    #     model, features, labels, val_indices
+    # )
+    # print(
+    #     f"Val Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "
+    #     f"F1 score {f1_score:.4f}"
+    # )
