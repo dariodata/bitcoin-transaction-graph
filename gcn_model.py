@@ -2,6 +2,7 @@
 
 import argparse
 import os
+import random
 import time
 
 import dgl
@@ -14,6 +15,12 @@ import torch.nn.functional as F
 import wandb
 from dgl.nn.pytorch import GraphConv
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
+
+# set random seeds
+seed = 0
+random.seed(seed)
+np.random.seed(seed)
+dgl.random.seed(seed)
 
 
 class GCN(nn.Module):
