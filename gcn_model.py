@@ -183,7 +183,7 @@ if __name__ == "__main__":
     # add self loop
     if not args.noselfloop:
         g.add_edges(g.nodes(), g.nodes())
-    
+
     print(g)
 
     if args.onlylocal:
