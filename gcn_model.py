@@ -105,6 +105,12 @@ def _parse_args():
         "--nlayer", type=int, default=2, help="Number of layers",
     )
     parser.add_argument(
+        "--onlylocal",
+        default=False,
+        action="store_true",
+        help="Use only local features for training",
+    )
+    parser.add_argument(
         "--posweight",
         type=float,
         default=0.7,
@@ -183,7 +189,10 @@ if __name__ == "__main__":
     )
     print(g)
 
-    features = g.ndata["features_matrix"].float()
+    if args.onlylocal:
+        features = g.ndata["features_matrix"][:, 0:94].float()
+    else:
+        features = g.ndata["features_matrix"].float()
     labels = g.ndata["label"].long()  # cross entropy loss
     in_feats = features.shape[1]
     n_classes = 2  # df_classes['label'].nunique()
