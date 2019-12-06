@@ -70,7 +70,7 @@ def evaluate(model, features, labels, mask):
                         ),
                         columns=["", "pred_neg", "pred_pos"],
                     )
-                }
+                }, commit=False
             )
         return loss, correct.item() * 1.0 / len(labels), p[1], r[1], f[1]
 
