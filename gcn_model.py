@@ -186,6 +186,7 @@ if __name__ == "__main__":
 
     print(g)
 
+    # get features and labels for training
     if args.onlylocal:
         features = g.ndata["features_matrix"][:, 0:94].float()
     else:
@@ -204,9 +205,9 @@ if __name__ == "__main__":
     val_indices = (
         ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
     )
-    test_indices = (
-        ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
-    )
+    # test_indices = (
+    #     ((features[:, 0] > train_time_steps) & (labels != -1)).nonzero().view(-1)
+    # )
 
     print(
         f"""----Data statistics------
@@ -214,7 +215,7 @@ if __name__ == "__main__":
         #Classes {n_classes}
         #Train samples {len(train_indices)}
         #Val samples {len(val_indices)}
-        #Test samples {len(test_indices)}"""
+        #Input features {in_feats}"""
     )
 
     n_hidden = args.nhidden
@@ -277,9 +278,9 @@ if __name__ == "__main__":
     # %%
     print()
     _, acc, precision, recall, f1_score = evaluate(
-        model, features, labels, test_indices
+        model, features, labels, val_indices
     )
     print(
-        f"Test Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "
+        f"Val Accuracy {acc:.4f} | Precision {precision:.4f} | Recall {recall:.4f} | "
         f"F1 score {f1_score:.4f}"
     )
