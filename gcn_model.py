@@ -306,8 +306,8 @@ if __name__ == "__main__":
     dropout = args.dropout
 
     if args.model == "gcn":
-    # create GCN model
-    model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout)
+        # create GCN model
+        model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout)
     elif args.model == "appnp":
         hiddens = args.hidden_sizes
         model = APPNP(
