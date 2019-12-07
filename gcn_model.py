@@ -70,7 +70,8 @@ def evaluate(model, features, labels, mask):
                         ),
                         columns=["", "pred_neg", "pred_pos"],
                     )
-                }, commit=False
+                },
+                commit=False,
             )
         return loss, correct.item() * 1.0 / len(labels), p[1], r[1], f[1]
 
@@ -108,7 +109,7 @@ def _parse_args():
         "--onlylocal",
         type=bool,
         default=False,
-        #action="store_true",
+        # action="store_true",
         help="Use only local features for training",
     )
     parser.add_argument(
