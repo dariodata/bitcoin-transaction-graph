@@ -93,6 +93,24 @@ class APPNP(nn.Module):
         h = self.propagate(self.g, h)
         return h
 
+
+class MLP(APPNP):
+    def __init__(
+        self, in_feats, hiddens, n_classes, activation, feat_drop,
+    ):
+        super().__init__()
+
+    def forward(self, features):
+        # prediction step
+        h = features
+        h = self.feat_drop(h)
+        h = self.activation(self.layers[0](h))
+        for layer in self.layers[1:-1]:
+            h = self.activation(layer(h))
+        h = self.layers[-1](self.feat_drop(h))
+        return h
+
+
 def evaluate(model, features, labels, mask):
     model.eval()
     with torch.no_grad():
@@ -303,6 +321,10 @@ if __name__ == "__main__":
             alpha=args.alpha,
             k=args.k,
         )
+    elif args.model == "mlp":
+        hiddens = args.hidden_sizes
+        model = MLP(in_feats, hiddens, n_classes, F.relu, feat_drop=dropout,)
+
     if not args.nowandb:
         wandb.watch(model)
 
