@@ -13,7 +13,7 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import wandb
-from dgl.nn.pytorch import GraphConv
+from dgl.nn.pytorch import GraphConv, APPNPConv
 from sklearn.metrics import confusion_matrix, precision_recall_fscore_support
 
 # set random seeds
@@ -45,6 +45,53 @@ class GCN(nn.Module):
             h = layer(self.g, h)
         return h
 
+
+class APPNP(nn.Module):
+    def __init__(
+        self,
+        g,
+        in_feats,
+        hiddens,
+        n_classes,
+        activation,
+        feat_drop,
+        edge_drop,
+        alpha,
+        k,
+    ):
+        super(APPNP, self).__init__()
+        self.g = g
+        self.layers = nn.ModuleList()
+        # input layer
+        self.layers.append(nn.Linear(in_feats, hiddens[0]))
+        # hidden layers
+        for i in range(1, len(hiddens)):
+            self.layers.append(nn.Linear(hiddens[i - 1], hiddens[i]))
+        # output layer
+        self.layers.append(nn.Linear(hiddens[-1], n_classes))
+        self.activation = activation
+        if feat_drop:
+            self.feat_drop = nn.Dropout(feat_drop)
+        else:
+            self.feat_drop = lambda x: x
+        self.propagate = APPNPConv(k, alpha, edge_drop)
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        for layer in self.layers:
+            layer.reset_parameters()
+
+    def forward(self, features):
+        # prediction step
+        h = features
+        h = self.feat_drop(h)
+        h = self.activation(self.layers[0](h))
+        for layer in self.layers[1:-1]:
+            h = self.activation(layer(h))
+        h = self.layers[-1](self.feat_drop(h))
+        # propagation step
+        h = self.propagate(self.g, h)
+        return h
 
 def evaluate(model, features, labels, mask):
     model.eval()
@@ -106,6 +153,13 @@ def _parse_args():
         "--nlayer", type=int, default=2, help="Number of layers",
     )
     parser.add_argument(
+        "--hidden_sizes",
+        type=int,
+        nargs="+",
+        default=[64],
+        help="hidden unit sizes for appnp",
+    )
+    parser.add_argument(
         "--onlylocal",
         type=bool,
         default=False,
@@ -136,6 +190,15 @@ def _parse_args():
         default=False,
         action="store_true",
         help="If true, do not use wandb for this run",
+    )
+    parser.add_argument(
+        "--model", type=str, default="gcn", help="Which model to train",
+    )
+    parser.add_argument(
+        "--alpha", type=float, help="Teletransportation probabilty for APPNP",
+    )
+    parser.add_argument(
+        "--k", type=int, help="Number of iterations of propagation in APPNP",
     )
     args = parser.parse_args()
     return args
@@ -224,8 +287,22 @@ if __name__ == "__main__":
     n_layers = args.nlayer
     dropout = args.dropout
 
+    if args.model == "gcn":
     # create GCN model
     model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout)
+    elif args.model == "appnp":
+        hiddens = args.hidden_sizes
+        model = APPNP(
+            g,
+            in_feats,
+            hiddens,
+            n_classes,
+            F.relu,
+            feat_drop=dropout,
+            edge_drop=dropout,
+            alpha=args.alpha,
+            k=args.k,
+        )
     if not args.nowandb:
         wandb.watch(model)
 
