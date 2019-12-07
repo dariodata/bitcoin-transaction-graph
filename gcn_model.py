@@ -106,8 +106,9 @@ def _parse_args():
     )
     parser.add_argument(
         "--onlylocal",
+        type=bool,
         default=False,
-        action="store_true",
+        #action="store_true",
         help="Use only local features for training",
     )
     parser.add_argument(
@@ -145,7 +146,7 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph3")
+        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph4")
         wandb.config.update(args)
 
     # load data
