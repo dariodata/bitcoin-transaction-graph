@@ -94,11 +94,35 @@ class APPNP(nn.Module):
         return h
 
 
-class MLP(APPNP):
+class MLP(nn.Module):
     def __init__(
-        self, in_feats, hiddens, n_classes, activation, feat_drop,
+        self,
+        in_feats,
+        hiddens,
+        n_classes,
+        activation,
+        feat_drop,
     ):
-        super().__init__()
+        super(MLP, self).__init__()
+        self.g = g
+        self.layers = nn.ModuleList()
+        # input layer
+        self.layers.append(nn.Linear(in_feats, hiddens[0]))
+        # hidden layers
+        for i in range(1, len(hiddens)):
+            self.layers.append(nn.Linear(hiddens[i - 1], hiddens[i]))
+        # output layer
+        self.layers.append(nn.Linear(hiddens[-1], n_classes))
+        self.activation = activation
+        if feat_drop:
+            self.feat_drop = nn.Dropout(feat_drop)
+        else:
+            self.feat_drop = lambda x: x
+        self.reset_parameters()
+
+    def reset_parameters(self):
+        for layer in self.layers:
+            layer.reset_parameters()
 
     def forward(self, features):
         # prediction step
