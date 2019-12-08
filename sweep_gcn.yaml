@@ -1,5 +1,5 @@
 program: gcn_model.py
-method: random
+method: grid
 # metric:
 #   name: val_loss
 #   goal: minimize
