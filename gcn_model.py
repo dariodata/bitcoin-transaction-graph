@@ -21,6 +21,7 @@ seed = 0
 random.seed(seed)
 np.random.seed(seed)
 dgl.random.seed(seed)
+torch.manual_seed(seed)
 
 
 class GCN(nn.Module):
