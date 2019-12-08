@@ -1,0 +1,33 @@
+program: gcn_model.py
+method: random
+# metric:
+#   name: val_loss
+#   goal: minimize
+# early_terminate:
+#   type: hyperband
+#   min_iter: 300
+#   eta: 2
+parameters:
+  model:
+    value: "gcn"
+  epochs:
+    value: 1000
+  lr:
+    value: 0.001
+  weight_decay:
+    values: [0., 0.0005]
+  nobias:
+    values: [True, False]
+  train_ratio:
+    value: 0.7
+  dropout:
+    value: 0. # [0., 0.2, 0.3, 0.5]
+  nhidden:
+    values: [100, 64]
+  nlayer:
+    value: 2
+  onlylocal:
+    values: [False, True]
+  bidirectional:
+    values: [False, True]
+  
