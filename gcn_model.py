@@ -24,17 +24,23 @@ dgl.random.seed(seed)
 
 
 class GCN(nn.Module):
-    def __init__(self, g, in_feats, n_hidden, n_classes, n_layers, activation, dropout):
+    def __init__(
+        self, g, in_feats, n_hidden, n_classes, n_layers, activation, dropout, bias
+    ):
         super(GCN, self).__init__()
         self.g = g
         self.layers = nn.ModuleList()
         # input layer
-        self.layers.append(GraphConv(in_feats, n_hidden, activation=activation))
+        self.layers.append(
+            GraphConv(in_feats, n_hidden, activation=activation, bias=bias)
+        )
         # hidden layers
         for _ in range(n_layers - 2):
-            self.layers.append(GraphConv(n_hidden, n_hidden, activation=activation))
+            self.layers.append(
+                GraphConv(n_hidden, n_hidden, activation=activation, bias=bias)
+            )
         # output layer
-        self.layers.append(GraphConv(n_hidden, n_classes))
+        self.layers.append(GraphConv(n_hidden, n_classes, bias=bias))
         self.dropout = nn.Dropout(p=dropout)
 
     def forward(self, features):
@@ -181,6 +187,9 @@ def _parse_args():
         help="Fraction of data to use for training",
     )
     parser.add_argument(
+        "--nobias", type=bool, default=False, help="Do not add learnable bias",
+    )
+    parser.add_argument(
         "--dropout", type=float, default=0.5, help="Dropout rate for training",
     )
     parser.add_argument(
@@ -203,10 +212,7 @@ def _parse_args():
         help="Use only local features for training",
     )
     parser.add_argument(
-        "--bidirectional",
-        type=bool,
-        default=False,
-        help="Make edges bidirectional",
+        "--bidirectional", type=bool, default=False, help="Make edges bidirectional",
     )
     parser.add_argument(
         "--posweight",
@@ -336,10 +342,11 @@ if __name__ == "__main__":
     n_hidden = args.nhidden
     n_layers = args.nlayer
     dropout = args.dropout
+    bias = not args.nobias
 
     if args.model == "gcn":
         # create GCN model
-        model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout)
+        model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout, bias)
     elif args.model == "appnp":
         hiddens = args.hidden_sizes
         model = APPNP(
