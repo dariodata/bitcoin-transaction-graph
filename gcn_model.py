@@ -96,12 +96,7 @@ class APPNP(nn.Module):
 
 class MLP(nn.Module):
     def __init__(
-        self,
-        in_feats,
-        hiddens,
-        n_classes,
-        activation,
-        feat_drop,
+        self, in_feats, hiddens, n_classes, activation, feat_drop,
     ):
         super(MLP, self).__init__()
         self.g = g
