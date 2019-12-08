@@ -263,8 +263,8 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph3")
-        wandb.config.update(args, allow_val_change=True)
+        wandb.init(config=args, project="btc-transaction-graph")
+        #wandb.config.update(args)
 
     # load data
     path = os.path.dirname(os.path.realpath(__file__))
