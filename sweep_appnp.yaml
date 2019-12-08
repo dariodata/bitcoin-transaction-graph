@@ -1,0 +1,29 @@
+program: gcn_model.py
+method: bayes
+metric:
+  name: val_loss
+  goal: minimize
+parameters:
+  model:
+    value: "appnp"
+  epochs:
+    value: 1000
+  lr:
+    value: 0.001
+  weight_decay:
+    value: 0.0005
+  train_ratio:
+    value: 0.7
+  dropout:
+    value: 0.2
+  edge_drop:
+    value: 0.
+  hidden_sizes:
+    value: "64,64"
+  alpha:
+    values: [0.1, 0.2, 0.3]
+  k:
+    values: [10, 20]
+  onlylocal:
+    value: True
+  
