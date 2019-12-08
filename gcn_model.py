@@ -240,6 +240,7 @@ def _parse_args():
         "--edge_drop", type=float, default=0.0, help="Edge dropout for APPNP",
     )
     args = parser.parse_args()
+    args.hidden_sizes = [int(item) for item in args.hidden_sizes.split(",")]
     return args
 
 
