@@ -191,10 +191,9 @@ def _parse_args():
     )
     parser.add_argument(
         "--hidden_sizes",
-        type=int,
-        nargs="+",
-        default=[64],
-        help="hidden unit sizes for appnp",
+        type=str,
+        default="64,64",
+        help="hidden unit sizes for appnp e.g. '64,64' without quotes or spaces",
     )
     parser.add_argument(
         "--onlylocal",
