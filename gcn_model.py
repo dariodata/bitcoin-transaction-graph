@@ -236,6 +236,9 @@ def _parse_args():
     parser.add_argument(
         "--k", type=int, help="Number of iterations of propagation in APPNP",
     )
+    parser.add_argument(
+        "--edge_drop", type=float, default=0.0, help="Edge dropout for APPNP",
+    )
     args = parser.parse_args()
     return args
 
@@ -335,7 +338,7 @@ if __name__ == "__main__":
             n_classes,
             F.relu,
             feat_drop=dropout,
-            edge_drop=dropout,
+            edge_drop=args.edge_drop,
             alpha=args.alpha,
             k=args.k,
         )
