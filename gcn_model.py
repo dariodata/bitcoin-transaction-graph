@@ -203,6 +203,12 @@ def _parse_args():
         help="Use only local features for training",
     )
     parser.add_argument(
+        "--bidirectional",
+        type=bool,
+        default=False,
+        help="Make edges bidirectional",
+    )
+    parser.add_argument(
         "--posweight",
         type=float,
         default=0.7,
@@ -250,7 +256,7 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph4")
+        wandb.init(config={"framework": "torch"}, project="bitcoin-transaction-graph3")
         wandb.config.update(args, allow_val_change=True)
 
     # load data
@@ -274,6 +280,10 @@ if __name__ == "__main__":
         zip(df_classes["txId"], [{"label": v} for v in df_classes["label"]])
     )
     g_nx.add_edges_from(zip(df_edges["txId1"], df_edges["txId2"]))
+
+    if args.bidirectional:
+        # make edges bidirectional
+        g_nx = g_nx.to_undirected().to_directed()
 
     # create DGL graph
     g = dgl.DGLGraph()
