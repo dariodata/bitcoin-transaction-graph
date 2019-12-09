@@ -59,8 +59,9 @@ class APPNP(nn.Module):
         self,
         g,
         in_feats,
-        hiddens,
+        n_hidden,
         n_classes,
+        n_layers,
         activation,
         feat_drop,
         edge_drop,
@@ -71,12 +72,12 @@ class APPNP(nn.Module):
         self.g = g
         self.layers = nn.ModuleList()
         # input layer
-        self.layers.append(nn.Linear(in_feats, hiddens[0]))
+        self.layers.append(nn.Linear(in_feats, n_hidden))
         # hidden layers
-        for i in range(1, len(hiddens)):
-            self.layers.append(nn.Linear(hiddens[i - 1], hiddens[i]))
+        for _ in range(n_layers - 2):
+            self.layers.append(nn.Linear(n_hidden, n_hidden))
         # output layer
-        self.layers.append(nn.Linear(hiddens[-1], n_classes))
+        self.layers.append(nn.Linear(n_hidden, n_classes))
         self.activation = activation
         if feat_drop:
             self.feat_drop = nn.Dropout(feat_drop)
@@ -104,18 +105,17 @@ class APPNP(nn.Module):
 
 class MLP(nn.Module):
     def __init__(
-        self, in_feats, hiddens, n_classes, activation, feat_drop,
+        self, in_feats, n_hidden, n_classes, n_layers, activation, feat_drop,
     ):
         super(MLP, self).__init__()
-        self.g = g
         self.layers = nn.ModuleList()
         # input layer
-        self.layers.append(nn.Linear(in_feats, hiddens[0]))
+        self.layers.append(nn.Linear(in_feats, n_hidden))
         # hidden layers
-        for i in range(1, len(hiddens)):
-            self.layers.append(nn.Linear(hiddens[i - 1], hiddens[i]))
+        for _ in range(n_layers - 2):
+            self.layers.append(nn.Linear(n_hidden, n_hidden))
         # output layer
-        self.layers.append(nn.Linear(hiddens[-1], n_classes))
+        self.layers.append(nn.Linear(n_hidden, n_classes))
         self.activation = activation
         if feat_drop:
             self.feat_drop = nn.Dropout(feat_drop)
@@ -203,12 +203,12 @@ def _parse_args():
     parser.add_argument(
         "--nlayer", type=int, default=2, help="Number of layers",
     )
-    parser.add_argument(
-        "--hidden_sizes",
-        type=str,
-        default="64,64",
-        help="hidden unit sizes for appnp e.g. '64,64' without quotes or spaces",
-    )
+    # parser.add_argument(
+    #     "--hidden_sizes",
+    #     type=str,
+    #     default="64,64",
+    #     help="hidden unit sizes for appnp e.g. '64,64' without quotes or spaces",
+    # )
     parser.add_argument(
         "--onlylocal",
         type=lambda x: bool(distutils.util.strtobool(x)),
@@ -260,7 +260,7 @@ def _parse_args():
         "--edge_drop", type=float, default=0.0, help="Edge dropout for APPNP",
     )
     args = parser.parse_args()
-    args.hidden_sizes = [int(item) for item in args.hidden_sizes.split(",")]
+    # args.hidden_sizes = [int(item) for item in args.hidden_sizes.split(",")]
     return args
 
 
@@ -358,12 +358,13 @@ if __name__ == "__main__":
         # create GCN model
         model = GCN(g, in_feats, n_hidden, n_classes, n_layers, F.relu, dropout, bias)
     elif args.model == "appnp":
-        hiddens = args.hidden_sizes
+        # hiddens = args.hidden_sizes
         model = APPNP(
             g,
             in_feats,
-            hiddens,
+            n_hidden,
             n_classes,
+            n_layers,
             F.relu,
             feat_drop=dropout,
             edge_drop=args.edge_drop,
@@ -371,8 +372,8 @@ if __name__ == "__main__":
             k=args.k,
         )
     elif args.model == "mlp":
-        hiddens = args.hidden_sizes
-        model = MLP(in_feats, hiddens, n_classes, F.relu, feat_drop=dropout,)
+        # hiddens = args.hidden_sizes
+        model = MLP(in_feats, n_hidden, n_classes, n_layers, F.relu, feat_drop=dropout,)
 
     if not args.nowandb:
         wandb.watch(model)
