@@ -15,15 +15,15 @@ parameters:
   lr:
     value: 0.001
   weight_decay:
-    values: [0., 0.0005]
+    values: [0.0005, 0.]
   nobias:
-    values: [True, False]
+    values: [False, True]
   train_ratio:
     value: 0.7
   dropout:
-    value: 0. # [0., 0.2, 0.3, 0.5]
+    value: 0. # [0.2, 0.3, 0.5]
   nhidden:
-    values: [100, 64]
+    value: 100 # [100, 64]
   nlayer:
     value: 2
   onlylocal:
