@@ -1,6 +1,7 @@
 # # Fraud Detection using Graph Convolutional Networks
 
 import argparse
+import distutils
 import os
 import random
 import time
@@ -188,7 +189,10 @@ def _parse_args():
         help="Fraction of data to use for training",
     )
     parser.add_argument(
-        "--nobias", type=bool, default=False, help="Do not add learnable bias",
+        "--nobias",
+        type=lambda x: bool(distutils.util.strtobool(x)),
+        default=False,
+        help="Do not add learnable bias",
     )
     parser.add_argument(
         "--dropout", type=float, default=0.5, help="Dropout rate for training",
@@ -207,13 +211,16 @@ def _parse_args():
     )
     parser.add_argument(
         "--onlylocal",
-        type=bool,
+        type=lambda x: bool(distutils.util.strtobool(x)),
         default=False,
         # action="store_true",
         help="Use only local features for training",
     )
     parser.add_argument(
-        "--bidirectional", type=bool, default=False, help="Make edges bidirectional",
+        "--bidirectional",
+        type=lambda x: bool(distutils.util.strtobool(x)),
+        default=False,
+        help="Make edges bidirectional",
     )
     parser.add_argument(
         "--posweight",
@@ -263,8 +270,10 @@ if __name__ == "__main__":
     args = _parse_args()
 
     if not args.nowandb:
-        wandb.init(config=args, project="btc-transaction-graph")
-        #wandb.config.update(args)
+        wandb.init(config=args, project="btc-tsx-graph")
+        # wandb.config.update(args)
+
+    print(args)
 
     # load data
     path = os.path.dirname(os.path.realpath(__file__))
