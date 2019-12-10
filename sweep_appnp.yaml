@@ -1,8 +1,12 @@
 program: gcn_model.py
-method: bayes
-metric:
-  name: val_loss
-  goal: minimize
+method: grid
+# metric:
+#   name: val_loss
+#   goal: minimize
+# early_terminate:
+#   type: hyperband
+#   min_iter: 300
+#   eta: 2
 parameters:
   model:
     value: "appnp"
@@ -12,18 +16,23 @@ parameters:
     value: 0.001
   weight_decay:
     value: 0.0005
+  nobias:
+    value: False
   train_ratio:
     value: 0.7
   dropout:
-    value: 0.2
+    value: 0.25
   edge_drop:
     value: 0.
-  hidden_sizes:
-    value: "64,64"
+  nhidden:
+    value: 100 # [100, 64]
+  nlayer:
+    value: 2
   alpha:
-    values: [0.1, 0.2, 0.3]
+    values: [0.2, 0.3]
   k:
     values: [10, 20]
   onlylocal:
+    value: False # [False, True]
+  bidirectional:
     value: True
-  
