@@ -1,8 +1,8 @@
 program: gcn_model.py
 method: grid
 # metric:
-#   name: val_loss
-#   goal: minimize
+#   name: val_f1_score
+#   goal: maximize
 # early_terminate:
 #   type: hyperband
 #   min_iter: 300
@@ -21,7 +21,7 @@ parameters:
   train_ratio:
     value: 0.7
   dropout:
-    value: 0.25
+    values: [0., 0.2]
   edge_drop:
     value: 0.
   nhidden:
@@ -29,10 +29,10 @@ parameters:
   nlayer:
     value: 2
   alpha:
-    values: [0.2, 0.3]
+    value: 0.2 #[0.2, 0.3]
   k:
-    values: [10, 20]
+    value: 20 # [10, 20]
   onlylocal:
-    value: False # [False, True]
+    values: [False, True]
   bidirectional:
     value: True

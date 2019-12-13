@@ -1,8 +1,8 @@
 program: gcn_model.py
-method: bayes
-metric:
-  name: val_loss
-  goal: minimize
+method: grid
+# metric:
+#   name: val_loss
+#   goal: minimize
 parameters:
   model:
     value: "mlp"
@@ -15,7 +15,7 @@ parameters:
   train_ratio:
     value: 0.7
   dropout:
-    value: 0.25
+    values: [0., 0.2]
   nhidden:
     value: 100 # [100, 64]
   nlayer:
