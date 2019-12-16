@@ -1,8 +1,8 @@
-program: gcn_model.py
-method: bayes
-metric:
-  name: val_f1_score
-  goal: maximize
+program: models.py
+method: grid
+# metric:
+#   name: val_f1_score
+#   goal: maximize
 # early_terminate:
 #   type: hyperband
 #   min_iter: 350
@@ -21,8 +21,7 @@ parameters:
   train_ratio:
     value: 0.7
   dropout:
-    min: 0.
-    max: 0.5
+    values: [0.45, 0.5]
   nhidden:
     value: 100 # [100, 64]
   nlayer:

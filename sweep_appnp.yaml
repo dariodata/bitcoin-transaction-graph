@@ -1,4 +1,4 @@
-program: gcn_model.py
+program: models.py
 method: grid
 # metric:
 #   name: val_f1_score
@@ -21,7 +21,7 @@ parameters:
   train_ratio:
     value: 0.7
   dropout:
-    values: [0., 0.2]
+    values: [0., 0.25]
   edge_drop:
     value: 0.
   nhidden:
@@ -29,10 +29,10 @@ parameters:
   nlayer:
     value: 2
   alpha:
-    value: 0.2 #[0.2, 0.3]
+    value: 0.3 #[0.2, 0.3]
   k:
-    value: 20 # [10, 20]
+    values: [10, 20]
   onlylocal:
-    values: [False, True]
+    value: True
   bidirectional:
     value: True
