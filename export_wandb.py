@@ -39,9 +39,9 @@ for i, df in enumerate(history_list):
     df["name"] = name_list[i]
 
 
-all_df.set_index(['name', '_step'], inplace=True)
-history_df['_step'] = history_df['_step'].astype(int)
-history_df.set_index(['name', '_step'], inplace=True)
+all_df.set_index(["name", "_step"], inplace=True)
+history_df["_step"] = history_df["_step"].astype(int)
+history_df.set_index(["name", "_step"], inplace=True)
 
 all_df.to_csv("experiments_summary.csv")
 history_df.to_csv("experiments_metrics.csv")
