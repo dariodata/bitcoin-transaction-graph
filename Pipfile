@@ -7,7 +7,6 @@ verify_ssl = true
 pandas-profiling = "*"
 flake8 = "*"
 black = "==19.10b0"
-wandb = "*"
 
 [packages]
 torch = "*"
@@ -15,6 +14,8 @@ torchvision = "*"
 dgl = "*"
 scikit-learn = "*"
 jupyterlab = "*"
+graphql-core = "==2.0"
+wandb = "*"
 
 [requires]
 python_version = "3.7"
