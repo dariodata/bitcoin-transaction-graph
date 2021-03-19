@@ -7,6 +7,7 @@ verify_ssl = true
 pandas-profiling = "*"
 flake8 = "*"
 black = "==19.10b0"
+Pillow = ">=8.1.1"
 
 [packages]
 torch = "*"
